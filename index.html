@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Shopping List Check Off</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="styles/bootstrap.min.css" />
+    <style>
+      .emptyMessage {
+        font-weight: bold;
+        color: red;
+        font-size: 1.2em;
+      }
+      li {
+        margin-bottom: 7px;
+        font-size: 1.2em;
+      }
+      li > button {
+        margin-left: 6px;
+      }
+      button > span {
+        color: green;
+      }
+    </style>
+</head>
+<body ng-app="ShoppingListCheckOff">
+    <div >
+        <div class="container">
+        <h1>Assignment 2 :Shopping List Check Off</h1>
+
+        <div class="row">
+        <!-- To Buy List -->
+        <div class="col-md-6" ng-controller="ToBuyController as toBuyCtrl">
+          <h2>To Buy:</h2>
+            <ul>
+              <li ng-repeat="item in toBuyCtrl.shoppingList ">
+                 Buy {{item.name | uppercase }} of {{item.price | currency}}
+                 <button class="btn btn-default" ng-click="toBuyCtrl.MarkAsBought($index)">
+                   <span class="glyphicon glyphicon-ok"></span> Buy it
+                 </button>
+               </li>
+            </ul>
+            <div class="emptyMessage" ng-if= "toBuyCtrl.shoppingList.length <= 0">Everything is bought!</div>
+
+            <!--Item List Add controller -->
+            <form name="myForm">
+            <div ng-controller = "ShoppingListAddController as ItemAdder">
+               <input  name="ItemName" type="text" ng-model="ItemAdder.itemName" placeholder ="Item Name" required >
+               <input name="ItemPrice" type="text" ng-model="ItemAdder.itemPrice"  placeholder="Item Price" required>
+               <button type="button" ng-click="ItemAdder.AddItem()">Add item to buy list</button><br/>
+               <div class="emptyMessage" ng-if= "ItemAdder.ValidationMessage != ''">{{ItemAdder.ValidationMessage}}</div>
+            </div>
+            <form>
+        </div>
+
+        <!--Already bought list -->
+        <div class="col-md-6" ng-controller = "AlreadyBoughtController as boughtCtrl">
+             <h2>Already Bought:</h2>
+             <ul>
+               <li ng-repeat="item in boughtCtrl.shoppingList ">
+                  Bought {{item.name | uppercase }} of {{item.price | currency}}
+                  <span class="glyphicon glyphicon-ok"></span>
+                </li>
+             </ul>
+             <div class="emptyMessage" ng-if ="boughtCtrl.shoppingList.length <= 0">Nothing bought yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
